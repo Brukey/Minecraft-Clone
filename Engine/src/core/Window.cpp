@@ -20,8 +20,6 @@ namespace Engine {
 		if (glewInit() != GLEW_OK) {
 			fprintf(stderr, "Failed to load opengl functions!\n");
 		}
-
-
 	}
 
 	void Window::Close() {
