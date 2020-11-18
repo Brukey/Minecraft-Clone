@@ -4,7 +4,7 @@
 #include "core/Application.h"
 #include "core/EventManager.h"
 
-void handler(const Engine::KeyPressedEvent& e) {
+void keypressed(const Engine::KeyPressedEvent& e) {
 	printf("%d\n", e.keycode);
 }
 
@@ -13,18 +13,15 @@ void OnClose(const Engine::WindowCloseEvent& e) {
 	printf("WindowClose\n");
 }
 
+void resized(const Engine::WindowResizeEvent& e) {
+	printf("Window resized: %d, %d\n", e.width, e.height);
+}
+
 class App : public Engine::Application {
 	void OnStart() override {
-
-		Engine::KeyPressedEvent e;
-		e.keycode = 5;
-		Engine::EventManager::Subscribe<Engine::KeyPressedEvent>(handler);
-		Engine::EventManager::Publish(e);
-
 		Engine::EventManager::Subscribe<Engine::WindowCloseEvent>(::OnClose);
-		Engine::WindowCloseEvent e2;
-		Engine::EventManager::Publish(e2);
-
+		Engine::EventManager::Subscribe<Engine::KeyPressedEvent>(keypressed);
+		Engine::EventManager::Subscribe<Engine::WindowResizeEvent>(resized);
 	}
 
 	void OnUpdate(float timestep) override {

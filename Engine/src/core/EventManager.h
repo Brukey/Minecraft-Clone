@@ -22,6 +22,24 @@ namespace Engine {
 		uint32_t keycode;
 	};
 
+	struct MousePressedEvent {
+		uint32_t button;
+	};
+
+	struct MouseReleasedEvent {
+		uint32_t button;
+	};
+
+	struct MouseMoveEvent {
+		uint32_t mouseX;
+		uint32_t mouseY;
+	};
+
+	struct MouseScrollEvent {
+		int32_t y;
+		int32_t x;
+	};
+
 
 	class EventManager {
 	public:
