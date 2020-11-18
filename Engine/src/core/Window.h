@@ -6,7 +6,8 @@ namespace Engine {
 	{
 	public:
 		static void CreateWindow(int width, int height,const char* title);
-		static void Render();
+		static void Update();
+		static bool ShouldClose();
 		static void Close();
 	};
 

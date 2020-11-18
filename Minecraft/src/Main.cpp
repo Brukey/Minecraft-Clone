@@ -1,9 +1,19 @@
 #include <iostream>
+#include "core/Entrypoint.h"
 #include "core/Window.h"
+#include "core/Application.h"
 
 
-int main(const int argc, const char** argv) {
-	Engine::Window::CreateWindow(1020, 720, "Window");
+class App : public Engine::Application {
+	void OnStart() override {
 
-	return 0;
+	}
+
+	void OnUpdate(float timestep) override {
+
+	}
+};
+
+Engine::Application* CreateApplication() {
+	return (Engine::Application*) new App;
 }

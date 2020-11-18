@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <stdio.h>
 
 namespace Engine {
 
@@ -9,14 +10,31 @@ namespace Engine {
 
 	void Window::CreateWindow(int width, int height, const char* title) {
 		if (!glfwInit()) {
-			std::cerr << "Could not create a Window!" << std::endl;
+			fprintf(stderr, "Could not create a Window!\n");
 		}
 
 		s_window = glfwCreateWindow(width, height, title, NULL, NULL);
+		glfwMakeContextCurrent(s_window);
+
+		// glewInit
+		if (glewInit() != GLEW_OK) {
+			fprintf(stderr, "Failed to load opengl functions!\n");
+		}
+
 
 	}
 
 	void Window::Close() {
+		glfwDestroyWindow(s_window);
+		glfwTerminate();
 	}
 
+	void Window::Update() {
+		glfwSwapBuffers(s_window);
+		glfwPollEvents();
+	}
+
+	bool Window::ShouldClose() {
+		return glfwWindowShouldClose(s_window);
+	}
 }
