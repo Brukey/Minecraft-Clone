@@ -16,7 +16,7 @@ namespace Engine {
 
 		while (m_running = !Window::ShouldClose()) {
 			// Render as fast as possible
-			Render();
+			OnRender();
 			Window::SwapBuffers();
 			Window::Update();
 		}
@@ -24,7 +24,7 @@ namespace Engine {
 		m_updateThread.join();
 	}
 
-	void Application::Render() {
+	void Application::OnRender() const {
 
 	}
 
