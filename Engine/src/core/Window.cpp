@@ -78,11 +78,14 @@ namespace Engine {
 	}
 
 	void Window::Update() {
-		glfwSwapBuffers(s_window);
 		glfwPollEvents();
 	}
 
 	bool Window::ShouldClose() {
 		return glfwWindowShouldClose(s_window);
+	}
+
+	void Window::SwapBuffers() {
+		glfwSwapBuffers(s_window);
 	}
 }

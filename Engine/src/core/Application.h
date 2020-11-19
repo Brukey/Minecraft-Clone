@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thread>
 
 namespace Engine {
 
@@ -9,8 +10,18 @@ namespace Engine {
 		
 		virtual void OnStart() = 0;
 		virtual void OnUpdate(float timestep) {}
+		void Render();
 		void OnClose();
 		void Run();
+
+
 	private:
+		void UpdateThread();
+
+	private:
+		std::thread m_updateThread;
+		bool m_running;
+		
+
 	};
 }
