@@ -8,6 +8,7 @@ namespace Engine {
 
 	struct VertexBufferLayout {
 		struct BufferElement {
+			BufferElement(uint32_t loc, uint32_t dim) : location(loc), numDimensions(dim) {}
 			uint32_t location;
 			uint32_t numDimensions;
 		};

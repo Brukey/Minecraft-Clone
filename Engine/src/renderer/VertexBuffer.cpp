@@ -34,11 +34,12 @@ namespace Engine {
 	}
 
 	void VertexBuffer::SetLayout(const VertexBufferLayout& layout) {
-		uint32_t offset = 0;
+		ASSERT(m_rendererId == s_boundVertexBuffer);
+		uint64_t offset = 0;
 		for (const VertexBufferLayout::BufferElement& element : layout.elements) {
 			glEnableVertexAttribArray(element.location);
 
-			glVertexAttribPointer(element.location, element.numDimensions, GL_FLOAT, GL_FLOAT, layout.stride, offset);
+			glVertexAttribPointer(element.location, element.numDimensions, GL_FLOAT, GL_FALSE, layout.stride, (const void*) offset);
 			offset += sizeof(float) * element.numDimensions;
 		}
 	}
