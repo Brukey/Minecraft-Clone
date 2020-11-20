@@ -14,6 +14,12 @@ namespace Engine {
 		return vbo;
 	}
 
+	VertexBuffer::~VertexBuffer() {
+		if (s_boundVertexBuffer == m_rendererId)
+			Unbind();
+		glDeleteBuffers(1, &m_rendererId);
+	}
+
 	void VertexBuffer::Bind() const {
 		if (s_boundVertexBuffer != m_rendererId) {
 			glBindBuffer(GL_ARRAY_BUFFER, m_rendererId);

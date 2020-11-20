@@ -10,7 +10,7 @@ namespace Engine {
 		
 		virtual void OnStart() = 0;
 		virtual void OnUpdate(float timestep) {}
-		void OnRender() const;
+		virtual void OnRender() const;
 		void OnClose();
 		void Run();
 

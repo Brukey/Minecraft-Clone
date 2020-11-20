@@ -2,10 +2,12 @@
 #include "Window.h"
 #include <GL/glew.h>
 #include <chrono>
+#include "renderer/RenderCommand.h"
 
 namespace Engine {
 	void Application::Start() {
 		Window::CreateWindow(1020, 720, "Window");
+		RenderCommand::InitContext();
 
 		OnStart();
 	}

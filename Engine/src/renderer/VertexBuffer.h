@@ -14,7 +14,7 @@ namespace Engine {
 		};
 
 		std::vector<BufferElement> elements;
-		uint32_t stride;
+		uint32_t stride = 0;
 
 		void PushFloat(uint32_t location, uint32_t dimensions) {
 			stride += sizeof(float) * dimensions;
@@ -25,6 +25,8 @@ namespace Engine {
 	class VertexBuffer {
 	public:
 		static std::shared_ptr<VertexBuffer> Create();
+
+		~VertexBuffer();
 
 		void Bind() const;
 		void Unbind() const;
