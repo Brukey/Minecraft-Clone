@@ -7,5 +7,4 @@
 #else
 	#define LOG(...)
 	#define ASSERT(condition)
-	#define ASSERT(condition, message)
 #endif

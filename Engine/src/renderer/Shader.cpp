@@ -63,8 +63,8 @@ namespace Engine {
 
 		shader->m_rendererId = glCreateProgram();
 		// compile shader source
-		uint32_t vertexShader = CompileShader(vertexSource.c_str(), vertexSource.size(), GL_VERTEX_SHADER);
-		uint32_t fragmentShader = CompileShader(fragmentSource.c_str(), fragmentSource.size(), GL_FRAGMENT_SHADER);
+		uint32_t vertexShader = CompileShader(vertexSource.c_str(), (uint32_t) vertexSource.size(), GL_VERTEX_SHADER);
+		uint32_t fragmentShader = CompileShader(fragmentSource.c_str(), (uint32_t) fragmentSource.size(), GL_FRAGMENT_SHADER);
 
 		// link vertex and fragment shader
 
