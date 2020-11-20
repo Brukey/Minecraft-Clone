@@ -5,7 +5,6 @@
 namespace Engine {
 
 	void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-
 		const char* messageType;
 		switch (severity) {
 		case GL_DEBUG_SEVERITY_HIGH:
@@ -17,6 +16,9 @@ namespace Engine {
 		case GL_DEBUG_SEVERITY_LOW:
 			messageType = "PERFORMANCE INFO";
 			break;
+		default:
+			messageType = "INFO";
+			return;
 		}
 
 		LOG("[Opengl %s]: %s\n", messageType, message);
@@ -24,8 +26,10 @@ namespace Engine {
 
 	void RenderCommand::InitContext() {
 		glCullFace(GL_BACK);
+#ifdef DEBUG
 		glEnable(GL_DEBUG_OUTPUT);
 		glDebugMessageCallback(MessageCallback, NULL);
+#endif //DEBUG
 	}
 
 	void RenderCommand::DrawIndexed(uint32_t numIndices) {
