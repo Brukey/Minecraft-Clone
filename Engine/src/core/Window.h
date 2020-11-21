@@ -10,6 +10,7 @@ namespace Engine {
 		static void SwapBuffers();
 		static bool ShouldClose();
 		static void Close();
+		static void SetTitle(const char* title);
 	};
 
 }
