@@ -19,6 +19,7 @@ void resized(const Engine::WindowResizeEvent& e) {
 
 class App : public Engine::Application {
 	void OnStart() override {
+		Engine::Window::SetTitle("Minecraft-clone");
 		Engine::EventManager::Subscribe<Engine::WindowCloseEvent>(::OnClose);
 		Engine::EventManager::Subscribe<Engine::KeyPressedEvent>(keypressed);
 		Engine::EventManager::Subscribe<Engine::WindowResizeEvent>(resized);

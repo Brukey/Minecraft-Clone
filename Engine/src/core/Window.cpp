@@ -88,4 +88,8 @@ namespace Engine {
 	void Window::SwapBuffers() {
 		glfwSwapBuffers(s_window);
 	}
+
+	void Window::SetTitle(const char* title) {
+		glfwSetWindowTitle(s_window, title);
+	}
 }
