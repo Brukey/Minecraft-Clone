@@ -27,7 +27,7 @@ project "Engine"
 
 	libdirs {
 		"external libraries/GLEW/lib/Release/x64",
-		"external libraries/GLFW/lib-vc2019"
+		"external libraries/GLFW/lib-vc2017"
 	}
 	links {
 		"glfw3.lib",
