@@ -48,13 +48,13 @@ namespace Engine {
 
 		template<typename T>
 		static void Subscribe(Func<T> callback) {
-			subscribed<T>.push_back(callback);
+			GetSubscribed<T>().push_back(callback);
 		}
 
 
 		template<typename T>
 		static void Publish(const T& event) {
-			for (Func<T>& callback : subscribed<T>) {
+			for (Func<T>& callback : GetSubscribed<T>()) {
 				callback(event);
 			}
 		}
@@ -62,6 +62,10 @@ namespace Engine {
 
 	private:
 		template<typename T>
-		static std::vector<Func<T>> subscribed;
+		static std::vector<Func<T>> GetSubscribed() {
+			static std::vector<Func<T>> subscribed;
+			return subscribed;
+		}
+		
 	};
 }
