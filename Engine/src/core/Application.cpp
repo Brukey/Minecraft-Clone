@@ -2,10 +2,12 @@
 #include "Window.h"
 #include <GL/glew.h>
 #include <chrono>
+#include "renderer/RenderCommand.h"
 
 namespace Engine {
 	void Application::Start() {
 		Window::CreateWindow(1020, 720, "Window");
+		RenderCommand::InitContext();
 
 		OnStart();
 	}
@@ -33,7 +35,7 @@ namespace Engine {
 		auto previous = std::chrono::steady_clock::now();
 		while (m_running) {
 			auto now = std::chrono::steady_clock::now();
-			uint32_t timeDifferenceMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(now - previous).count();
+			uint32_t timeDifferenceMicroseconds = (uint32_t) std::chrono::duration_cast<std::chrono::microseconds>(now - previous).count();
 			previous = now;
 
 			float dt = (float)timeDifferenceMicroseconds / 1000000.0f;
