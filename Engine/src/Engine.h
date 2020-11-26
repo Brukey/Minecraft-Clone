@@ -11,3 +11,4 @@
 #include "renderer/IndexBuffer.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/RenderCommand.h"
+#include "renderer/Texture.h"
