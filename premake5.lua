@@ -65,6 +65,7 @@ project "Minecraft"
 
 	includedirs {
 		"external libraries/glm",
+		"external libraries/stb",
 		"Engine/src/",
 	}
 
