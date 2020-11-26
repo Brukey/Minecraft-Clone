@@ -52,7 +52,7 @@ namespace Minecraft {
 			ibo->SetBufferData(indices, 6);
 
 
-			tex.LoadImage("res/t1.png");
+			tex = Engine::Texture::CreateFromFile("res/t1.png");
 		}
 
 
@@ -60,7 +60,7 @@ namespace Minecraft {
 
 		void OnRender() const override {
 			Engine::RenderCommand::ClearColorBuffer();
-			tex.Bind();
+			tex->Bind();
 			shader->Bind();
 			vao->Bind();
 			Engine::RenderCommand::DrawIndexed(ibo->GetIndexCount());
@@ -70,7 +70,6 @@ namespace Minecraft {
 
 		}
 
-		Engine::Texture tex;
 		std::shared_ptr<Engine::Shader> shader;
 		std::shared_ptr<Engine::VertexArray> vao;
 		std::shared_ptr<Engine::VertexBuffer> vbo;
