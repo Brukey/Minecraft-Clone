@@ -26,11 +26,12 @@ namespace Minecraft {
 			float vertices[] = {
 				-0.5f, -0.5f,
 				0.5f, -0.5f,
-				0.0f, 0.5f
+				-0.5f, +0.5f,
+				0.5f, +0.5f
 			};
 
 
-			uint32_t indices[3] = { 0, 1, 2 };
+			uint32_t indices[6] = { 0, 1, 2 , 1, 3, 2};
 
 			vao = Engine::VertexArray::Create();
 			vao->Bind();
@@ -45,7 +46,7 @@ namespace Minecraft {
 
 			ibo = Engine::IndexBuffer::Create();
 			ibo->Bind();
-			ibo->SetBufferData(indices, 3);
+			ibo->SetBufferData(indices, 6);
 		}
 
 		void OnRender() const override {
