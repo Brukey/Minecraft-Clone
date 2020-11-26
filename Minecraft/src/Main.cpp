@@ -52,7 +52,7 @@ namespace Minecraft {
 			ibo->SetBufferData(indices, 6);
 
 
-			tex = Engine::Texture::CreateFromFile("res/t1.png");
+			tex = Engine::Texture::CreateFromFile("res/textures/grass.png");
 		}
 
 
