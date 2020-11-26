@@ -25,6 +25,7 @@ namespace Engine {
 	}
 
 	void RenderCommand::InitContext() {
+		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 #ifdef DEBUG
 		glEnable(GL_DEBUG_OUTPUT);
