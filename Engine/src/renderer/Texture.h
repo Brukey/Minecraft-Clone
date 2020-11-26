@@ -1,9 +1,6 @@
 #pragma once
-#include "EventManager.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
+#include <string>
 
 namespace Engine {
 
@@ -12,6 +9,7 @@ namespace Engine {
 		uint32_t texture_ID;
 		int width, height, nrChannels;
 	
+		
 
 	public:
 		Texture();
@@ -19,10 +17,10 @@ namespace Engine {
 
 		void Create();
 
-		void LoadImage(std::string path);
+		void LoadImage(const std::string& path);
 
-		void Bind();
-		void Unbind();
+		void Bind() const;
+		void Unbind() const;
 
 	};
 

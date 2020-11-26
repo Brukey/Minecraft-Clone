@@ -1,6 +1,8 @@
 #include <Engine.h>
 #include "types/Block.h"
 #include "types/Chunk.h"
+#include "renderer/Texture.h"
+
 
 namespace Minecraft {
 
@@ -24,10 +26,10 @@ namespace Minecraft {
 			shader = Engine::Shader::CreateFromFile("res/shaders/Shader.glsl");
 
 			float vertices[] = {
-				-0.5f, -0.5f,
-				0.5f, -0.5f,
-				-0.5f, +0.5f,
-				0.5f, +0.5f
+				-0.5f, -0.5f, 0.0f, 0.0f,
+				0.5f, -0.5f,  1.0f, 0.0f,
+				-0.5f, +0.5f, 0.0f, 1.0f,
+				0.5f, +0.5f, 1.0f, 1.0f
 			};
 
 
@@ -38,6 +40,7 @@ namespace Minecraft {
 
 			Engine::VertexBufferLayout layout;
 			layout.PushFloat(0, 2);
+			layout.PushFloat(1, 2);
 
 			vbo = Engine::VertexBuffer::Create();
 			vbo->Bind();
@@ -47,10 +50,17 @@ namespace Minecraft {
 			ibo = Engine::IndexBuffer::Create();
 			ibo->Bind();
 			ibo->SetBufferData(indices, 6);
+
+
+			tex.LoadImage("res/t1.png");
 		}
+
+
+
 
 		void OnRender() const override {
 			Engine::RenderCommand::ClearColorBuffer();
+			tex.Bind();
 			shader->Bind();
 			vao->Bind();
 			Engine::RenderCommand::DrawIndexed(ibo->GetIndexCount());
@@ -60,10 +70,12 @@ namespace Minecraft {
 
 		}
 
+		Engine::Texture tex;
 		std::shared_ptr<Engine::Shader> shader;
 		std::shared_ptr<Engine::VertexArray> vao;
 		std::shared_ptr<Engine::VertexBuffer> vbo;
 		std::shared_ptr<Engine::IndexBuffer> ibo;
+		std::shared_ptr<Engine::Texture> tex;
 	};
 
 }

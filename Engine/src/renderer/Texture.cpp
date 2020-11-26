@@ -1,6 +1,10 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include "Texture.h"
 #include <GL/glew.h>
-#include "Logger.h"
+#include "core/Logger.h"
+
 
 Engine::Texture::Texture():
 	texture_ID(0)
@@ -16,9 +20,13 @@ void Engine::Texture::Create()
 	glGenTextures(1, &texture_ID);
 }
 
-void Engine::Texture::LoadImage(std::string path)
+void Engine::Texture::LoadImage(const std::string& path)
 {
+
+	stbi_set_flip_vertically_on_load(true);
+
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+
 	
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -34,15 +42,16 @@ void Engine::Texture::LoadImage(std::string path)
 		LOG("Could not load image. %s, %d", "asd", 5);
 	}
 
+
 	stbi_image_free(data);
 }
 
-void Engine::Texture::Bind()
+void Engine::Texture::Bind() const
 {
 	glBindTexture(GL_TEXTURE_2D, texture_ID);
 }
 
-void Engine::Texture::Unbind()
+void Engine::Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, texture_ID);
 }
