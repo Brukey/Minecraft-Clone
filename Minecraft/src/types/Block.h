@@ -5,11 +5,13 @@
 
 namespace Minecraft {
 
-	enum BlockType : uint32_t {Grass, Dirt, Stone};
+	enum Block : uint32_t {Air = 0, Grass, Dirt, Stone};
 
 	struct BlockData {
-		BlockData() : solid(true) {}
+		BlockData(Block type) : type(type), solid(true), meshBlock(true) {}
+		Block type;
 		bool solid;
+		bool meshBlock;
 		// texture
 		// transparent
 	};
@@ -17,7 +19,6 @@ namespace Minecraft {
 	class BlockRegistry {
 	public:
 		static void Initialize();
-		static const BlockData& GetBlockData(const BlockType& type);
-		
+		static const BlockData& GetBlockData(const Block& type);
 	};
 }
