@@ -105,4 +105,82 @@ namespace Engine {
 		s_usedProgram = 0;
 		glUseProgram(0);
 	}
+
+
+	int32_t Shader::GetUniformLocation(const char* uniform) const {
+		if (m_uniformLocations.find(uniform) == m_uniformLocations.end()) {
+			int32_t loc = glGetUniformLocation(m_rendererId, uniform);
+			m_uniformLocations[uniform] = loc;
+			return loc;
+		}
+		return m_uniformLocations[uniform];
+	}
+
+	void Shader::SetMat4(const char* name, const glm::mat4& mat) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
+	}
+
+	void Shader::SetFloat(const char* name, float val) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform1f(loc, val);
+	}
+
+	void Shader::SetFloat2(const char* name, float x, float y) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform2f(loc, x, y);
+	}
+	
+	void Shader::SetFloat3(const char* name, float x, float y, float z) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform3f(loc, x, y, z);
+	}
+
+	void Shader::SetFloat4(const char* name, float x, float y, float z, float w) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform4f(loc, x, y, z, w);
+	}
+
+	void Shader::SetFloatArray(const char* name, const float* values, uint32_t numValues) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform1fv(loc, numValues, values);
+
+	}
+
+	void Shader::SetInt(const char* name, const int32_t value) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform1i(loc, value);
+	}
+
+	void Shader::SetInt2(const char* name, int32_t x, int32_t y) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform2i(loc, x, y);
+	}
+
+	void Shader::SetInt3(const char* name, int32_t x, int32_t y, int32_t z) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform3i(loc, x, y, z);
+	}
+
+	void Shader::SetInt4(const char* name, int32_t x, int32_t y, int32_t z, int32_t w) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform4i(loc, x, y, z, w);
+
+	}
+
+	void Shader::SetIntArray(const char* name, int32_t* values, uint32_t numValues) const {
+		ASSERT(m_rendererId == s_usedProgram);
+		int32_t loc = GetUniformLocation(name);
+		glUniform1iv(loc, numValues, values);
+	}
 }

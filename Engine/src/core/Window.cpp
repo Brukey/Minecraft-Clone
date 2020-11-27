@@ -92,4 +92,17 @@ namespace Engine {
 	void Window::SetTitle(const char* title) {
 		glfwSetWindowTitle(s_window, title);
 	}
+
+
+	uint32_t Window::GetWidth() {
+		int32_t x, y;
+		glfwGetWindowSize(s_window, &x, &y);
+		return x;
+	}
+
+	uint32_t Window::GetHeight() {
+		int32_t x, y;
+		glfwGetWindowSize(s_window, &x, &y);
+		return y;
+	}
 }

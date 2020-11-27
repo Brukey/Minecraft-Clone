@@ -62,7 +62,7 @@ namespace Engine {
 
 	private:
 		template<typename T>
-		static std::vector<Func<T>> GetSubscribed() {
+		static std::vector<Func<T>>& GetSubscribed() {
 			static std::vector<Func<T>> subscribed;
 			return subscribed;
 		}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 namespace Engine {
 
 	class Window
@@ -11,6 +13,10 @@ namespace Engine {
 		static bool ShouldClose();
 		static void Close();
 		static void SetTitle(const char* title);
+
+		static uint32_t GetWidth();
+		static uint32_t GetHeight();
+
 	};
 
 }
