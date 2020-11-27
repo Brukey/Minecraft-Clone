@@ -72,7 +72,6 @@ namespace Minecraft {
 		}
 
 		void OnResize(const Engine::WindowResizeEvent& e) {
-			LOG("%dx%d\n", e.width, e.height);
 			Engine::RenderCommand::SetViewport(0, 0, e.width, e.height);
 			float aspectRatio = (float)e.width / e.height;
 			projectionmatrix = glm::perspective(3.1415f * 0.5f, aspectRatio, 0.1f, 100.0f) *
