@@ -54,7 +54,7 @@ namespace Minecraft {
 			projectionmatrix = glm::perspective(3.1415f * 0.5f, aspectRatio, 0.1f, 100.0f) *
 				glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
-			camera->RotateY(1.0f);
+			camera->RotateY(-35.0f);
 			
 		}
 
@@ -65,8 +65,7 @@ namespace Minecraft {
 			Engine::RenderCommand::ClearColorBuffer();
 			tex->Bind();
 			shader->Bind();
-			shader->SetMat4("projectionmatrix", projectionmatrix);
-			shader->SetMat4("viewmatrix", camera->GetViewMatrix());
+			shader->SetMat4("viewprojectionmatrix", projectionmatrix * camera->GetViewMatrix());
 			vao->Bind();
 
 			Engine::RenderCommand::DrawIndexed(ibo->GetIndexCount());

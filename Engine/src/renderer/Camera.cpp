@@ -11,28 +11,31 @@ Engine::Camera::~Camera()
 }
 
 
-glm::mat4 Engine::Camera::SetPosition(float x, float y, float z)
+void Engine::Camera::SetPosition(float x, float y, float z)
 {
-	return viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
+	position = glm::vec3(x, y, z);
 }
 
-glm::mat4 Engine::Camera::RotateX(float degree)
+void Engine::Camera::RotateX(float degree)
 {
-	return viewMatrix = glm::rotate(glm::mat4(1.0f), degree, glm::vec3(1.0f, 0.0f, 0.0f) );
+	rotation.x += glm::radians(degree);
 }
 
-glm::mat4 Engine::Camera::RotateY(float degree)
+void Engine::Camera::RotateY(float degree)
 {
-	return viewMatrix = glm::rotate(glm::mat4(1.0f), degree, glm::vec3(0.0f, 1.0f, 0.0f));
+	rotation.y += glm::radians(degree);
 }
 
-glm::mat4 Engine::Camera::RotateZ(float degree)
+void Engine::Camera::RotateZ(float degree)
 {
-	return viewMatrix = glm::rotate(glm::mat4(1.0f), degree, glm::vec3(0.0f, 0.0f, 1.0f));
+	rotation.z += glm::radians(degree);
 }
-
 
 glm::mat4 Engine::Camera::GetViewMatrix()
 {
-	return viewMatrix;
+	glm::mat4 viewmatrix = glm::translate(glm::mat4(1.0f), position) * 
+		glm::rotate(glm::mat4(1.0f), rotation.x, glm::vec3(1.0f, 0.0f, 0.0f)) * 
+		glm::rotate(glm::mat4(1.0f), rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	return glm::inverse(viewmatrix);
 }
