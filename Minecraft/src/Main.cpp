@@ -4,6 +4,8 @@
 #include "renderer/Texture.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "renderer/Camera.h"
+
 
 namespace Minecraft {
 
@@ -45,13 +47,15 @@ namespace Minecraft {
 			ibo->Bind();
 			ibo->SetBufferData(indices, 6);
 
-
+			camera = Engine::Camera::Create();
 
 			tex = Engine::Texture::CreateFromFile("res/textures/grass.png");
 			float aspectRatio = (float) Engine::Window::GetWidth() / Engine::Window::GetHeight();
 			projectionmatrix = glm::perspective(3.1415f * 0.5f, aspectRatio, 0.1f, 100.0f) *
 				glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
+			camera->RotateY(1.0f);
+			
 		}
 
 
@@ -62,6 +66,7 @@ namespace Minecraft {
 			tex->Bind();
 			shader->Bind();
 			shader->SetMat4("projectionmatrix", projectionmatrix);
+			shader->SetMat4("viewmatrix", camera->GetViewMatrix());
 			vao->Bind();
 
 			Engine::RenderCommand::DrawIndexed(ibo->GetIndexCount());
@@ -78,12 +83,14 @@ namespace Minecraft {
 				glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 		}
 
+		
 		glm::mat4 projectionmatrix;
 		std::shared_ptr<Engine::Shader> shader;
 		std::shared_ptr<Engine::VertexArray> vao;
 		std::shared_ptr<Engine::VertexBuffer> vbo;
 		std::shared_ptr<Engine::IndexBuffer> ibo;
 		std::shared_ptr<Engine::Texture> tex;
+		std::shared_ptr<Engine::Camera> camera;
 	};
 
 }
