@@ -1,7 +1,6 @@
 #pragma once
 
 
-#include "core/Entrypoint.h"
 #include "core/Window.h"
 #include "core/Application.h"
 #include "core/EventManager.h"

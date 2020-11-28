@@ -5,10 +5,16 @@
 
 namespace Minecraft {
 
-	enum Block : uint32_t {Air = 0, Grass, Dirt, Stone};
+	enum Block : uint32_t {
+		Air = 0, 
+		Grass, 
+		Dirt, 
+		Stone
+	};
 
 	struct BlockData {
-		BlockData(Block type) : type(type), solid(true), meshBlock(true) {}
+		BlockData(Block type) : 
+			type(type), solid(true), meshBlock(true) {}
 		Block type;
 		bool solid;
 		bool meshBlock;

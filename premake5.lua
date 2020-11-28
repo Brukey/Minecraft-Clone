@@ -67,6 +67,7 @@ project "Minecraft"
 		"external libraries/glm",
 		"external libraries/stb",
 		"Engine/src/",
+		"Minecraft/src/"
 	}
 
 	links {
