@@ -5,6 +5,7 @@
 #include "core/Window.h"
 #include "core/Application.h"
 #include "core/EventManager.h"
+#include "core/Input.h"
 
 #include "renderer/Shader.h"
 #include "renderer/VertexArray.h"

@@ -13,6 +13,7 @@ namespace Minecraft {
 		void OnStart() override {
 			Engine::Window::SetTitle("Minecraft-clone");
 			Engine::EventManager::Subscribe<Engine::WindowResizeEvent>(std::bind(&App::OnResize, this, std::placeholders::_1));
+			Engine::EventManager::Subscribe<Engine::MouseMovedEvent>(std::bind(&App::MouseMoved, this, std::placeholders::_1));
 			BlockRegistry::Initialize();
 
 
@@ -72,6 +73,27 @@ namespace Minecraft {
 		}
 
 		void OnUpdate(float timestep) override {
+			glm::vec3 deltaPosition{0.0f};
+			if (Engine::Input::IsKeyDown(Engine::Key::W)) {
+				deltaPosition += camera->Forward();
+			}else if (Engine::Input::IsKeyDown(Engine::Key::S)) {
+				deltaPosition += camera->Backward();
+			}
+
+			if (Engine::Input::IsKeyDown(Engine::Key::A)) {
+				deltaPosition += camera->Left();
+			}else if (Engine::Input::IsKeyDown(Engine::Key::D)) {
+				deltaPosition += camera->Right();
+			}
+
+			if (Engine::Input::IsKeyDown(Engine::Key::SPACE)) {
+				deltaPosition += camera->Up();
+			}else if (Engine::Input::IsKeyDown(Engine::Key::LEFT_SHIFT)) {
+				deltaPosition += camera->Down();
+			}
+
+			if(glm::length(deltaPosition) > 0.00001f)
+				camera->position += timestep * glm::normalize(deltaPosition) * 3.0f;
 
 		}
 
@@ -80,6 +102,11 @@ namespace Minecraft {
 			float aspectRatio = (float)e.width / e.height;
 			projectionmatrix = glm::perspective(3.1415f * 0.5f, aspectRatio, 0.1f, 100.0f) *
 				glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+		}
+
+		void MouseMoved(const Engine::MouseMovedEvent& e) {
+			camera->RotateX(-0.3f * e.deltaY);
+			camera->RotateY(-0.3f * e.deltaX);
 		}
 
 		

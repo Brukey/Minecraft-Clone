@@ -40,6 +40,7 @@ namespace Engine {
 
 			float dt = (float)timeDifferenceMicroseconds / 1000000.0f;
 			OnUpdate(dt);
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 	}
 

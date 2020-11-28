@@ -26,6 +26,13 @@ namespace Engine {
 		uint32_t button;
 	};
 
+	struct MouseMovedEvent{
+		uint32_t x;
+		uint32_t y;
+		int32_t deltaX;
+		int32_t deltaY;
+	};
+
 	struct MouseReleasedEvent {
 		uint32_t button;
 	};
