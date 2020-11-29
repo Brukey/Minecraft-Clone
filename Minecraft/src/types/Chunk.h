@@ -1,11 +1,15 @@
 #pragma once
 
+#include <vector>
+
 #include "Block.h"
 #include <core/Logger.h>
 #include "vec3i.h"
 #include "renderer/VertexArray.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/IndexBuffer.h"
+#include "renderer/Texture.h"
+
 
 
 #define CHUNK_SIZE (16)
@@ -30,11 +34,15 @@ namespace Minecraft {
 
 		inline const std::shared_ptr<Engine::VertexArray> GetVertexArray() const { return vao; }
 		inline uint32_t GetNumMeshIndices() const { return ibo->GetIndexCount(); }
+
+		inline const Vec3i& GetChunkPosition() const { return m_chunkPosition; }
+		inline const std::vector<std::shared_ptr<Engine::Texture>>& GetTextureSlots() const { return textureSlots; }
 	private:
 		Block m_blocks[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 		bool m_isDirty = true;
 		Vec3i m_chunkPosition;
 
+		std::vector<std::shared_ptr<Engine::Texture>> textureSlots;
 		std::shared_ptr<Engine::VertexArray> vao = NULL;
 		std::shared_ptr<Engine::IndexBuffer> ibo = NULL;
 		std::shared_ptr<Engine::VertexBuffer> vbo = NULL;

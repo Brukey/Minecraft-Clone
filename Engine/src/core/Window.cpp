@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include "EventManager.h"
+#include "Input.h"
 
 namespace Engine {
 
@@ -12,8 +13,9 @@ namespace Engine {
 		if (!glfwInit()) {
 			fprintf(stderr, "Could not create a Window!\n");
 		}
-
+		
 		s_window = glfwCreateWindow(width, height, title, NULL, NULL);
+		glfwSetInputMode(s_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwMakeContextCurrent(s_window);
 
 		// glewInit
@@ -49,6 +51,14 @@ namespace Engine {
 				e.button = (uint32_t) button;
 				EventManager::Publish(e);
 			}
+		});
+
+		glfwSetCursorPosCallback(s_window, [](GLFWwindow* window, double x, double y) {
+			MouseMovedEvent e;
+			e.x = (uint32_t) x;
+			e.y = (uint32_t) y;
+			Input::SetMousePosition(e.x, e.y, &e.deltaX, &e.deltaY);
+			EventManager::Publish(e);
 		});
 
 		glfwSetScrollCallback(s_window, [](GLFWwindow* window, double xoffset, double yoffset) {
@@ -104,5 +114,9 @@ namespace Engine {
 		int32_t x, y;
 		glfwGetWindowSize(s_window, &x, &y);
 		return y;
+	}
+
+	void* Window::GetNativeWindow() {
+		return (void*) s_window;
 	}
 }

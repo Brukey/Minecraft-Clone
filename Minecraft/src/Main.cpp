@@ -3,11 +3,14 @@
 
 #include "types/Block.h"
 #include "types/Chunk.h"
-#include "meshgenerator/MeshBuilder.h"
+#include "types/World.h"
 #include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "renderer/Camera.h"
+
+
 
 namespace Minecraft {
 
@@ -15,61 +18,26 @@ namespace Minecraft {
 		void OnStart() override {
 			Engine::Window::SetTitle("Minecraft-clone");
 			Engine::EventManager::Subscribe<Engine::WindowResizeEvent>(std::bind(&App::OnResize, this, std::placeholders::_1));
+			Engine::EventManager::Subscribe<Engine::MouseMovedEvent>(std::bind(&App::MouseMoved, this, std::placeholders::_1));
 			BlockRegistry::Initialize();
 
+			world.Load();
+			world.GetBlock({-1, 23, -19});
 
-			// setup render data
-			for (int32_t x = 0; x < 3; x++) {
-				for (int32_t z = 0; z < 3; z++) {
-					Chunk chunk{Vec3i(x, 0, -z)};
+			camera = Engine::Camera::Create();
 
-					for (uint32_t i = 0; i < CHUNK_SIZE; i++) {
-						for (uint32_t j = 0; j < CHUNK_SIZE; j++) {
-							for (uint32_t k = 0; k < CHUNK_SIZE / 2; k++) {
-								chunk.Set(Block::Dirt, i, k, j);
-							}
-						}
-					}
-					loadedChunks.push_back(chunk);
-				}
-			}
-
-			shader = Engine::Shader::CreateFromFile("res/shaders/Shader.glsl");
-			
-
-			float vertices[] = {
-				-0.5f, -0.5f, 0.0f, 0.0f,
-				0.5f, -0.5f,  1.0f, 0.0f,
-				-0.5f, +0.5f, 0.0f, 1.0f,
-				0.5f, +0.5f, 1.0f, 1.0f
-			};
-
-
-			uint32_t indices[6] = { 0, 1, 2 , 1, 3, 2};
-
-			vao = Engine::VertexArray::Create();
-			vao->Bind();
-
-			Engine::VertexBufferLayout layout;
-			layout.PushFloat(0, 2);
-			layout.PushFloat(1, 2);
-
-			vbo = Engine::VertexBuffer::Create();
-			vbo->Bind();
-			vbo->SetBufferData(vertices, sizeof(vertices));
-			vbo->SetLayout(layout);
-
-			ibo = Engine::IndexBuffer::Create();
-			ibo->Bind();
-			ibo->SetBufferData(indices, 6);
-
-
-
-			tex = Engine::Texture::CreateFromFile("res/textures/grass.png");
 			float aspectRatio = (float) Engine::Window::GetWidth() / Engine::Window::GetHeight();
-			cameramatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 2.0f, 5.0f));
 			projectionmatrix = glm::perspective(3.1415f * 0.5f, aspectRatio, 0.1f, 100.0f);
 
+			camera->position = { -0.3f, 0, 0.0f };
+
+			shader = Engine::Shader::CreateFromFile("res/shaders/Shader.glsl");
+			uint32_t samplers[30];
+			for (uint32_t i = 0; i < 30; i++)
+				samplers[i] = i;
+			shader->Bind();
+			shader->SetIntArray("samplers", (int32_t*) samplers, 30);
+			
 		}
 
 
@@ -77,23 +45,36 @@ namespace Minecraft {
 
 		void OnRender() const override {
 			Engine::RenderCommand::ClearColorBuffer();
-			tex->Bind();
 			shader->Bind();
-			shader->SetMat4("projectionmatrix", projectionmatrix * glm::inverse(cameramatrix));
-			vao->Bind();
 
-			for (Chunk& chunk : loadedChunks) {
-				if (chunk.IsDirty()) {
-					// regenerate mesh
-					MeshBuilder::Generate(chunk);
-				}
-				chunk.GetVertexArray()->Bind();
-				uint32_t numIndices = chunk.GetNumMeshIndices();
-				Engine::RenderCommand::DrawIndexed(numIndices);
-			}
+			shader->SetMat4("viewprojectionmatrix", projectionmatrix * camera->GetViewMatrix());
+
+			world.Render();
 		}
 
 		void OnUpdate(float timestep) override {
+			glm::vec3 deltaPosition{0.0f};
+			constexpr float maxSpeed = 9.0f;
+			if (Engine::Input::IsKeyDown(Engine::Key::W)) {
+				deltaPosition += camera->Forward();
+			}else if (Engine::Input::IsKeyDown(Engine::Key::S)) {
+				deltaPosition += camera->Backward();
+			}
+
+			if (Engine::Input::IsKeyDown(Engine::Key::A)) {
+				deltaPosition += camera->Left();
+			}else if (Engine::Input::IsKeyDown(Engine::Key::D)) {
+				deltaPosition += camera->Right();
+			}
+
+			if (Engine::Input::IsKeyDown(Engine::Key::SPACE)) {
+				deltaPosition += camera->Up();
+			}else if (Engine::Input::IsKeyDown(Engine::Key::LEFT_SHIFT)) {
+				deltaPosition += camera->Down();
+			}
+
+			if(glm::length(deltaPosition) > 0.00001f)
+				camera->position += timestep * glm::normalize(deltaPosition) * maxSpeed;
 
 		}
 
@@ -104,14 +85,20 @@ namespace Minecraft {
 				glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 		}
 
-		mutable std::vector<Chunk> loadedChunks;
+
+
+		void MouseMoved(const Engine::MouseMovedEvent& e) {
+			camera->RotateX(-0.3f * e.deltaY);
+			camera->RotateY(-0.3f * e.deltaX);
+		}
+
+
+		
 		glm::mat4 projectionmatrix;
-		glm::mat4 cameramatrix;
+		
+		mutable World world;
 		std::shared_ptr<Engine::Shader> shader;
-		std::shared_ptr<Engine::VertexArray> vao;
-		std::shared_ptr<Engine::VertexBuffer> vbo;
-		std::shared_ptr<Engine::IndexBuffer> ibo;
-		std::shared_ptr<Engine::Texture> tex;
+		std::shared_ptr<Engine::Camera> camera;
 	};
 
 }
