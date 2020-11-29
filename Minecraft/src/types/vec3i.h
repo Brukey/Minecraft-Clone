@@ -19,6 +19,22 @@ namespace Minecraft {
 			return Vec3i{ x + value.x, y + value.y, z + value.z};
 		}
 
+		Vec3i operator+(const int32_t value) const {
+			return Vec3i{ x + value, y + value, z + value };
+		}
+
+		Vec3i operator/(const int32_t val) const {
+			return Vec3i{ x / val, y / val, z / val };
+		}
+
+		Vec3i operator%(const int32_t val) const {
+			return Vec3i{ x % val, y % val, z % val };
+		}
+
+
+		bool operator==(const Vec3i& value) const {
+			return x == value.x && y == value.y && z == value.z;
+		}
 
 	};
 }
