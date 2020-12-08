@@ -8,6 +8,7 @@
 namespace Engine {
 
 	static GLFWwindow* s_window = NULL;
+	static bool s_cursorEnabled = false;
 
 	void Window::CreateWindow(int width, int height, const char* title) {
 		if (!glfwInit()) {
@@ -15,8 +16,8 @@ namespace Engine {
 		}
 		
 		s_window = glfwCreateWindow(width, height, title, NULL, NULL);
-		glfwSetInputMode(s_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwMakeContextCurrent(s_window);
+		SetCursor(false);
 
 		// glewInit
 		if (glewInit() != GLEW_OK) {
@@ -81,6 +82,21 @@ namespace Engine {
 			EventManager::Publish(e);
 		});
 	}
+
+	void Window::SetCursor(bool enabled) {
+		
+		if(enabled)
+			glfwSetInputMode(s_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		else
+			glfwSetInputMode(s_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+		s_cursorEnabled = enabled;
+	}
+
+	bool Window::IsCursorEnabled() {
+		return s_cursorEnabled;
+	}
+
 
 	void Window::Close() {
 		glfwDestroyWindow(s_window);
