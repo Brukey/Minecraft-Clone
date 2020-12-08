@@ -19,6 +19,7 @@ namespace Minecraft {
 			Engine::Window::SetTitle("Minecraft-clone");
 			Engine::EventManager::Subscribe<Engine::WindowResizeEvent>(std::bind(&App::OnResize, this, std::placeholders::_1));
 			Engine::EventManager::Subscribe<Engine::MouseMovedEvent>(std::bind(&App::MouseMoved, this, std::placeholders::_1));
+			Engine::EventManager::Subscribe<Engine::KeyPressedEvent>(std::bind(&App::KeyPressed, this, std::placeholders::_1));
 			BlockRegistry::Initialize();
 
 			world.Load();
@@ -90,6 +91,11 @@ namespace Minecraft {
 		void MouseMoved(const Engine::MouseMovedEvent& e) {
 			camera->RotateX(-0.3f * e.deltaY);
 			camera->RotateY(-0.3f * e.deltaX);
+		}
+
+		void KeyPressed(const Engine::KeyPressedEvent e) {
+			if(e.keycode == Engine::Key::ESCAPE)
+				Engine::Window::SetCursor(!Engine::Window::IsCursorEnabled());
 		}
 
 

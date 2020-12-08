@@ -14,6 +14,9 @@ namespace Engine {
 		static void Close();
 		static void SetTitle(const char* title);
 
+		static void SetCursor(bool enabled);
+		static bool IsCursorEnabled();
+
 		static uint32_t GetWidth();
 		static uint32_t GetHeight();
 		static void* GetNativeWindow();
